@@ -7,10 +7,12 @@
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
     <title>Merry Christmas My Fiance</title>
     <!-- Styles -->
     <link rel="stylesheet" href="style.css">
-
+    <link rel="preload" href="music/Đoạn kết (Happy Ending) (Single) - Album 320 lossless.mp3" as="audio"
+        type="audio/mpeg">
     <!-- Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
@@ -21,7 +23,6 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
-
     <!-- MediaPipe -->
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js"
@@ -48,7 +49,8 @@
     <div id="hint-msg">🖐️ BUNG TIM | ✊ THU VỀ | 👋 XOAY | 👌 ZOOM ẢNH</div>
 
     <!-- Background Music -->
-    <audio id="bg-music" src="music/Đoạn kết (Happy Ending) (Single) - Album 320 lossless.mp3" loop autoplay></audio>
+    <audio id="bg-music" src="music/Đoạn kết (Happy Ending) (Single) - Album 320 lossless.mp3" loop autoplay
+        preload="auto"></audio>
 
     <!-- Letter Icon -->
     <div id="letter-icon">💌</div>

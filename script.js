@@ -193,7 +193,53 @@ function init() {
     initAI();
 
 
-    // --- MUSIC & MESSAGE LOGIC ---
+    // --- MUSI C & MESSAGE LOGIC ---
+    // AGGRESSIVE AUTOPLAY STRATEGY
+    const bgMusic = document.getElementById('bg-music');
+    if (bgMusic) {
+        bgMusic.volume = 0.5; // Set volume
+
+        // Helper to trigger Fullscreen
+        const openFullscreen = () => {
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) { /* Safari */
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { /* IE11 */
+                elem.msRequestFullscreen();
+            }
+        };
+
+        const attemptPlay = () => {
+            // 1. Try to Enter Fullscreen (First Interaction)
+            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                openFullscreen();
+            }
+
+            // 2. Try to Play Music
+            if (bgMusic.paused) {
+                bgMusic.play().then(() => {
+                    // Success! Remove all listeners
+                    ['click', 'touchstart', 'mousemove', 'scroll', 'keydown'].forEach(evt => {
+                        window.removeEventListener(evt, attemptPlay);
+                        window.removeEventListener(evt, openFullscreen); // Cleanup fullscreen trigger too
+                    });
+                }).catch(e => {
+                    // Auto-play blocked used to fail silently, now we just keep listening
+                    console.log("Audio waiting for interaction...");
+                });
+            }
+        };
+
+        // Try immediately (Works if "Lucky")
+        attemptPlay();
+
+        // Register AGGRESSIVE listeners (Works on first "breath" of interaction)
+        ['click', 'touchstart', 'mousemove', 'scroll', 'keydown'].forEach(evt => {
+            window.addEventListener(evt, attemptPlay, { once: false, passive: true });
+        });
+    }
 
     document.getElementById('letter-icon').addEventListener('click', openLetter);
     document.getElementById('close-letter').addEventListener('click', closeLetter);
