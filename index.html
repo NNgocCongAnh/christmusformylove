@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Merry Christmas My Fiance</title>
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/math/MeshSurfaceSampler.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+
+    <!-- MediaPipe -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <!-- UI Elements -->
+    <div id="image-viewer">
+        <img id="preview-img" src="" alt="Mở ảnh vệ tinh">
+        <video id="preview-video" src="" controls loop playsinline></video>
+    </div>
+    <video class="input_video"></video>
+    <canvas class="output_canvas" width="160" height="120"></canvas>
+    <div id="ai-status">Đang tải AI...<br>🖐️: Bung | ✊: Thu | 👌: Xem ảnh</div>
+
+    <div id="message-container">
+        <div id="main-msg">MERRY CHRISTMAS</div>
+        <div id="sub-msg">To: My Fiance, Thảo =3333</div>
+    </div>
+    <div id="hint-msg">🖐️ BUNG TIM | ✊ THU VỀ | 👋 XOAY | 👌 ZOOM ẢNH</div>
+
+    <!-- Background Music -->
+    <audio id="bg-music" src="music/Đoạn kết (Happy Ending) (Single) - Album 320 lossless.mp3" loop autoplay></audio>
+
+    <!-- Letter Icon -->
+    <div id="letter-icon">💌</div>
+
+    <!-- Letter Modal -->
+    <div id="letter-overlay">
+        <div id="letter-container">
+            <span id="close-letter">×</span>
+            <div id="letter-content"></div>
+        </div>
+    </div>
+
+    <!-- Application Logic -->
+    <script src="script.js"></script>
+</body>
+
+</html>

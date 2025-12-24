@@ -1,0 +1,406 @@
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            /* Prevent scrolling which can feel like zooming */
+            margin: 0;
+            padding: 0;
+            position: fixed;
+            /* fix for some iOS bounce behaviors */
+            background-color: #000510;
+        }
+
+        canvas {
+            display: block;
+            touch-action: none;
+            /* Prevent browser zoom/scroll */
+        }
+
+        /* CSS cho phần Camera AI */
+        .output_canvas {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 160px;
+            height: 120px;
+            z-index: 100;
+            border: 1px solid #333;
+            border-radius: 8px;
+            opacity: 0.6;
+            transform: scaleX(-1);
+            /* Lật ngược gương cho dễ nhìn */
+        }
+
+        #ai-status {
+            position: absolute;
+            top: 10px;
+            /* Moves to Top-Left */
+            left: 10px;
+            color: #00ff00;
+            font-family: monospace;
+            font-size: 14px;
+            z-index: 100;
+            text-align: left;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px;
+            border-radius: 5px;
+            /* display: none; */
+        }
+
+        /* CSS cho phần Camera AI */
+        .input_video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            opacity: 0.5;
+            z-index: 90;
+
+        }
+
+        .output_canvas {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 160px;
+            height: 120px;
+            z-index: -10;
+            border: 1px solid #333;
+            border-radius: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transform: scaleX(-1);
+        }
+
+
+
+        #message-container {
+            position: absolute;
+            top: 5%;
+            width: 100%;
+            text-align: center;
+            pointer-events: none;
+            z-index: 10;
+            transition: opacity 0.5s;
+        }
+
+        #main-msg {
+            color: #ff3333;
+            font-family: 'Arial', sans-serif;
+            font-size: 3rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px #ff0000;
+        }
+
+        #sub-msg {
+            font-size: 1.2rem;
+            color: #ffffff;
+            margin-top: 10px;
+        }
+
+        #hint-msg {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            color: #00ff00;
+            font-family: monospace;
+            animation: blink 2s infinite;
+            pointer-events: none;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px 0;
+            /* Giảm padding */
+            font-size: 2.5vmin;
+            /* Smaller Responsive font size */
+            white-space: nowrap;
+            /* Không xuống dòng */
+            overflow: hidden;
+            /* Tránh tràn */
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        #image-viewer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            pointer-events: none;
+            /* Allow clicks to pass through background */
+        }
+
+        #image-viewer img,
+        #image-viewer video {
+            max-width: 70%;
+            max-height: 70%;
+            border: 5px solid white;
+            border-radius: 10px;
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.5);
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: none;
+            /* Hide by default */
+            pointer-events: auto;
+            /* Enable controls and clicks on content */
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* LETTER & MESSAGE STYLES */
+        #letter-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            /* Move to Right */
+            left: auto;
+            font-size: 50px;
+            cursor: pointer;
+            z-index: 2000;
+            animation: heartbeat 1.5s infinite;
+            filter: drop-shadow(0 0 10px rgba(255, 0, 100, 0.8));
+            transition: transform 0.2s;
+        }
+
+        #letter-icon:hover {
+            transform: scale(1.2);
+        }
+
+        @keyframes heartbeat {
+            0% {
+                transform: scale(1);
+            }
+
+            10% {
+                transform: scale(1.1);
+            }
+
+            20% {
+                transform: scale(1);
+            }
+
+            30% {
+                transform: scale(1.1);
+            }
+
+            40% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        #letter-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            backdrop-filter: blur(5px);
+        }
+
+        #letter-container {
+            width: 80%;
+            /* Wider width for better reading */
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 0 30px rgba(255, 105, 180, 0.3);
+            position: relative;
+            color: #fff;
+            font-family: 'Times New Roman', serif;
+            /* Fallback font */
+            font-size: 1.2rem;
+            line-height: 1.6;
+            text-align: center;
+            /* Center Text */
+            overflow-y: auto;
+            max-height: 80vh;
+        }
+
+        #letter-icon:hover {
+            transform: scale(1.2);
+        }
+
+        @keyframes heartbeat {
+            0% {
+                transform: scale(1);
+            }
+
+            10% {
+                transform: scale(1.1);
+            }
+
+            20% {
+                transform: scale(1);
+            }
+
+            30% {
+                transform: scale(1.1);
+            }
+
+            40% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        #letter-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            backdrop-filter: blur(5px);
+        }
+
+        #letter-container {
+            width: 80%;
+            /* Wider width for better reading */
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 0 30px rgba(255, 105, 180, 0.3);
+            position: relative;
+            color: #fff;
+            font-family: 'Times New Roman', serif;
+            /* Fallback font */
+            font-size: 1.2rem;
+            line-height: 1.6;
+            text-align: left;
+            overflow-y: auto;
+            max-height: 80vh;
+        }
+
+        #close-letter {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 30px;
+            cursor: pointer;
+            color: #ff3333;
+            transition: color 0.3s;
+        }
+
+        #close-letter:hover {
+            color: #fff;
+        }
+
+        #letter-content {
+            white-space: pre-wrap;
+            /* Preserve line breaks */
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+
+        /* --- IPHONE 11 & MOBILE OPTIMIZATIONS --- */
+        @media (max-width: 480px) {
+            /* iPhone 11 viewport width is logical 414px */
+
+            #main-msg {
+                font-size: 2rem;
+                /* Smaller title */
+            }
+
+            #sub-msg {
+                font-size: 1rem;
+            }
+
+            #ai-status {
+                top: 10px !important;
+                /* Force to top */
+                left: 10px;
+                font-size: 12px;
+                max-width: 150px;
+            }
+
+            #hint-msg {
+                bottom: 10px;
+                font-size: 0.8rem;
+                padding: 5px;
+            }
+
+            #letter-container {
+                width: 90%;
+                padding: 20px;
+                font-size: 1rem;
+            }
+
+            #letter-icon {
+                bottom: 60px;
+                /* Slight bump up to avoid overlapping hint too much */
+                right: 10px;
+                font-size: 40px;
+            }
+        }
+
+        /* Mobile interaction/landscape tweaks */
+        @media (max-height: 500px) and (orientation: landscape) {
+            #message-container {
+                width: auto;
+                /* Stop taking full width */
+                left: auto;
+                /* Reset left */
+                right: 30px;
+                /* Position to the right */
+                top: 10px;
+                /* Adjust top spacing */
+                text-align: right;
+                /* Align text to the right */
+            }
+
+            #main-msg {
+                font-size: 1.5rem;
+                /* Smaller font */
+            }
+
+            #sub-msg {
+                font-size: 0.8rem;
+                /* Smaller sub-message */
+                margin-top: 5px;
+            }
+        }
